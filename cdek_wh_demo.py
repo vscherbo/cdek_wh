@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 """ CDEK webhooks listener
+gunicorn -w 2 -b 0.0.0.0:3000 myapp:app
 """
 
 from flask import Flask, request, Response
 
-APP = Flask(__name__)
-@APP.route('/', methods=['POST'])
+app = Flask(__name__)
+@app.route('/', methods=['POST'])
 def return_response():
     """ POST handler
     """
@@ -15,4 +16,4 @@ def return_response():
     return Response(status=200)
 
 if __name__ == "__main__":
-    APP.run(host='192.168.1.101', debug=True, port=8123)
+    app.run(host='192.168.1.101', debug=True, port=8123)
