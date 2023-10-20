@@ -7,7 +7,7 @@ run:
     gunicorn server:app -k gevent --worker-connections 1000
 """
 
-from cdek_wh_demo import app
+from cdek_wh import app
 
 if __name__ == "__main__":
     app.run()
