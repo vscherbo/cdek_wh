@@ -121,7 +121,7 @@ def produce_bunch_tasks():
     Generate a Bunch of Fake Tasks
     """
     num = random.randint(config.MIN_NBR_TASKS, config.MAX_NBR_TASKS)
-    num = 7
+    num = 2
     for i in range(num):
         loc_msg = produce_task()
         loc_resp = send_webhook(loc_msg)
