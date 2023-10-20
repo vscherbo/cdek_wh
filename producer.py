@@ -21,7 +21,7 @@ class TaskProvider(BaseProvider):
         """ event_type
         """
         types = [
-            'ORDER_STATUS'
+            'ORDER_STATUS', 'PRINT_FORM'
             # 'ORDER_STATUS', 'PRINT_FORM', 'DOWNLOAD_PHOTO', 'PREALERT_CLOSED'
         ]
         return types[random.randint(0, len(types)-1)]
@@ -53,12 +53,12 @@ def get_attributes(arg_type):
     elif arg_type == 'PRINT_FORM':
         attrs = {
                 "type": "barcode",
-                "url": "https://api.cdek.ru"
+                "url": f"https://api.cdek.ru/{fakeTasks.uri_path(deep=2)}"
                 }
     elif arg_type == 'DOWNLOAD_PHOTO':
         attrs = {
-                "cdek_number": 1111111111,
-                "link": "https://api.cdek.ru"
+                "cdek_number": 3333333333,
+                "link": f"https://api.cdek.ru/{fakeTasks.uri_path(deep=2)}"
                 }
     elif arg_type == 'PREALERT_CLOSED':
         attrs = {
@@ -74,7 +74,6 @@ def produce_task():
     """
     loc_ev_type = fakeTasks.event_type()
     message = {
-        #'type': fakeTasks.event_type()
         'type': loc_ev_type
         ,'date_time':fakeTasks.date_time_this_year()
         ,'uuid': str(uuid.uuid4())
@@ -121,7 +120,7 @@ def produce_bunch_tasks():
     Generate a Bunch of Fake Tasks
     """
     num = random.randint(config.MIN_NBR_TASKS, config.MAX_NBR_TASKS)
-    num = 2
+    num = 7
     for i in range(num):
         loc_msg = produce_task()
         loc_resp = send_webhook(loc_msg)

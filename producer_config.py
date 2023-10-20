@@ -14,4 +14,5 @@ MAX_NBR_TASKS = 3
 #Time to wait when producing tasks
 WAIT_TIME = 2
 #Webhook endpoint Mapping to the listener
-WEBHOOK_RECEIVER_URL = 'http://192.168.1.101:8123/'
+#WEBHOOK_RECEIVER_URL = 'http://192.168.1.101:8123/'
+WEBHOOK_RECEIVER_URL = 'http://ct-apps02.arc.world:8123/'
