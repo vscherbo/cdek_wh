@@ -5,6 +5,7 @@ gunicorn -w 2 -b 0.0.0.0:3000 myapp:app
 
 import sys
 import logging
+import time
 import json
 
 from flask import Flask, request, Response
@@ -65,6 +66,7 @@ class WebHookHandler():
     def parse_print_form(self):
         """ Parse JSON answer for PRINT_FORM
         """
+        time.sleep(5)
         self.ins_sql = self.cur.mogrify(INSERT_PRINT_FORM,
                                       (self.jdata['date_time'],
                                        self.jdata['uuid'],
@@ -80,11 +82,13 @@ class WebHookHandler():
         self.jdata = arg_json
 
         try:
-            con = psycopg2.connect(host=self.pg_host, user=self.pg_user)
+            con = psycopg2.connect(host=self.pg_host, user=self.pg_user,
+                    connect_timeout=30)
         except psycopg2.Error as exc:
             logging.error("Exception on connect=%s", exc)
         else:
             self.cur = con.cursor()
+            # prepare SQL and write to log
             if self.jdata['type'] == 'ORDER_STATUS':
                 self.parse_order_status()
             elif self.jdata['type'] == 'PRINT_FORM':
@@ -94,7 +98,7 @@ class WebHookHandler():
                 self.cur.execute(self.ins_sql)
             except psycopg2.Error:
                 con.rollback()
-                logging.error("Unexpected error:%s", sys.exc_info()[0])
+                logging.error("psycopg2.Error: %s", sys.exc_info())
             else:
                 con.commit()
             con.close()
